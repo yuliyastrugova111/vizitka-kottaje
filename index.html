@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Коттеджи Сарженка — Аренда посуточно</title>
+  <meta name="description" content="Аренда коттеджей посуточно от собственника. Коттеджи Сарженка. Елена: +7 (911) 156 61 08">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --forest: #0b2219;
+      --gold:   #d4af37;
+      --cream:  #f5f5dc;
+    }
+
+    html, body {
+      min-height: 100%;
+      background: var(--forest);
+      color: var(--cream);
+      font-family: system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* ── Page layout ─────────────────────────────────── */
+    .page {
+      min-height: 100svh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+      position: relative;
+    }
+
+    /* ── Background wow: slow drifting blurred orbs ─── */
+    .bg-orbs {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0;
+      will-change: transform, opacity;
+    }
+    .orb-1 {
+      width: 55vw; height: 55vw;
+      background: radial-gradient(circle, rgba(14,60,35,0.85) 0%, rgba(11,34,25,0) 70%);
+      top: -15%; left: -15%;
+      animation: drift1 32s ease-in-out infinite;
+    }
+    .orb-2 {
+      width: 45vw; height: 45vw;
+      background: radial-gradient(circle, rgba(20,80,45,0.7) 0%, rgba(11,34,25,0) 70%);
+      bottom: -10%; right: -10%;
+      animation: drift2 40s ease-in-out infinite;
+    }
+    .orb-3 {
+      width: 35vw; height: 35vw;
+      background: radial-gradient(circle, rgba(212,175,55,0.06) 0%, rgba(11,34,25,0) 70%);
+      top: 40%; left: 60%;
+      animation: drift3 28s ease-in-out infinite;
+    }
+    .orb-4 {
+      width: 30vw; height: 30vw;
+      background: radial-gradient(circle, rgba(30,90,50,0.5) 0%, rgba(11,34,25,0) 70%);
+      top: 20%; right: 5%;
+      animation: drift4 36s ease-in-out infinite;
+    }
+
+    @keyframes drift1 {
+      0%   { transform: translate(0,    0);    opacity: .7; }
+      33%  { transform: translate(8vw,  12vh); opacity: 1;  }
+      66%  { transform: translate(-5vw, 8vh);  opacity: .6; }
+      100% { transform: translate(0,    0);    opacity: .7; }
+    }
+    @keyframes drift2 {
+      0%   { transform: translate(0,    0);    opacity: .8; }
+      40%  { transform: translate(-10vw,-8vh); opacity: .5; }
+      70%  { transform: translate(6vw,  -5vh); opacity: .9; }
+      100% { transform: translate(0,    0);    opacity: .8; }
+    }
+    @keyframes drift3 {
+      0%   { transform: translate(0,    0);   opacity: .5; }
+      50%  { transform: translate(-8vw, 6vh); opacity: .9; }
+      100% { transform: translate(0,    0);   opacity: .5; }
+    }
+    @keyframes drift4 {
+      0%   { transform: translate(0,   0);    opacity: .6; }
+      45%  { transform: translate(5vw, 10vh); opacity: 1;  }
+      100% { transform: translate(0,   0);    opacity: .6; }
+    }
+
+    /* ── Falling leaves ──────────────────────────────── */
+    .leaves {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+    .leaf {
+      position: absolute;
+      top: -40px;
+      opacity: 0;
+      will-change: transform, opacity;
+      color: rgba(20, 80, 40, 0.35);
+      filter: blur(1px);
+    }
+    .leaf svg { display: block; }
+
+    /* 12 leaves — different positions/durations/delays via CSS custom props */
+    .leaf:nth-child(1)  { left:  5%; animation: fall 18s 0s    infinite linear; }
+    .leaf:nth-child(2)  { left: 14%; animation: fall 22s 3s    infinite linear; }
+    .leaf:nth-child(3)  { left: 26%; animation: fall 16s 6s    infinite linear; }
+    .leaf:nth-child(4)  { left: 38%; animation: fall 20s 1s    infinite linear; }
+    .leaf:nth-child(5)  { left: 50%; animation: fall 24s 8s    infinite linear; }
+    .leaf:nth-child(6)  { left: 62%; animation: fall 17s 4s    infinite linear; }
+    .leaf:nth-child(7)  { left: 73%; animation: fall 21s 11s   infinite linear; }
+    .leaf:nth-child(8)  { left: 83%; animation: fall 19s 2s    infinite linear; }
+    .leaf:nth-child(9)  { left: 91%; animation: fall 23s 9s    infinite linear; }
+    .leaf:nth-child(10) { left: 10%; animation: fall 25s 14s   infinite linear; }
+    .leaf:nth-child(11) { left: 55%; animation: fall 15s 7s    infinite linear; }
+    .leaf:nth-child(12) { left: 78%; animation: fall 20s 5s    infinite linear; }
+
+    @keyframes fall {
+      0%   { transform: translateY(0)    translateX(0)    rotate(0deg);   opacity: 0;   }
+      5%   { opacity: .35; }
+      85%  { opacity: .25; }
+      100% { transform: translateY(110vh) translateX(60px) rotate(200deg); opacity: 0; }
+    }
+
+    /* ── Card ─────────────────────────────────────────── */
+    .card {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 360px;
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 40px;
+      padding: 32px 28px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 28px;
+      box-shadow: 0 0 30px rgba(212,175,55,0.20), 0 20px 60px rgba(0,0,0,0.5);
+      animation: cardIn .9s cubic-bezier(.16,1,.3,1) both;
+    }
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Logo ─────────────────────────────────────────── */
+    .logo { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .logo svg { color: var(--gold); }
+    .logo-label {
+      font-size: 10px;
+      letter-spacing: .3em;
+      text-transform: uppercase;
+      color: rgba(212,175,55,.8);
+      font-weight: 500;
+    }
+
+    /* ── Video block ──────────────────────────────────── */
+    .hero-video-wrap {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid rgba(212,175,55,.20);
+      box-shadow: 0 0 20px rgba(212,175,55,.25);
+      transition: transform .3s ease, box-shadow .3s ease;
+    }
+    .hero-video-wrap:hover {
+      transform: scale(1.02);
+      box-shadow: 0 0 32px rgba(212,175,55,.40);
+    }
+    .hero-video-wrap video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* ── Text body ────────────────────────────────────── */
+    .text-body { text-align: center; display: flex; flex-direction: column; gap: 4px; }
+    .title {
+      font-size: 22px;
+      font-family: Georgia, 'Times New Roman', serif;
+      font-style: italic;
+      color: var(--cream);
+      font-weight: 400;
+    }
+    .subtitle {
+      font-size: 12px;
+      color: rgba(212,175,55,.8);
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    /* ── Contacts ─────────────────────────────────────── */
+    .contacts {
+      width: 100%;
+      border-top: 1px solid rgba(255,255,255,.10);
+      border-bottom: 1px solid rgba(255,255,255,.10);
+      padding: 16px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .contact-name {
+      color: rgba(245,245,220,.9);
+      font-size: 18px;
+      font-weight: 500;
+    }
+    .contact-phone {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--gold);
+      text-decoration: none;
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: -.01em;
+      transition: color .25s;
+    }
+    .contact-phone:hover { color: var(--cream); }
+    .contact-phone svg { flex-shrink: 0; }
+
+    /* ── Map button ───────────────────────────────────── */
+    .btn-map {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 16px;
+      border-radius: 16px;
+      border: 2px solid var(--gold);
+      color: var(--cream);
+      font-size: 17px;
+      font-weight: 600;
+      text-decoration: none;
+      background: transparent;
+      transition: background .25s, color .25s, transform .15s;
+      animation: btnPulse 2.5s ease-in-out infinite;
+    }
+    .btn-map svg { color: var(--gold); flex-shrink: 0; }
+    .btn-map:hover  { background: rgba(212,175,55,.12); transform: scale(1.02); animation: none; }
+    .btn-map:active { transform: scale(.97); animation: none; }
+    @keyframes btnPulse {
+      0%, 100% { transform: scale(1); }
+      50%       { transform: scale(1.025); }
+    }
+
+    /* ── Footer link ──────────────────────────────────── */
+    .footer-link {
+      font-size: 12px;
+      color: rgba(212,175,55,.40);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color .25s;
+    }
+    .footer-link:hover { color: rgba(212,175,55,.75); }
+  </style>
+</head>
+<body>
+
+<!-- Slow-drifting background orbs -->
+<div class="bg-orbs" aria-hidden="true">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  <div class="orb orb-4"></div>
+</div>
+
+<!-- Falling leaf particles -->
+<div class="leaves" aria-hidden="true">
+  <!-- leaf SVG: simple rhombus / diamond shape -->
+  <div class="leaf"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M12 2C12 2 12 12 2 12C2 12 12 12 12 22C12 22 12 12 22 12C22 12 12 12 12 2Z" fill="currentColor"/></svg></div>
+  <div class="leaf"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M12 2C12 2 12 12 2 12C2 12 12 12 12 22C12 22 12 12 22 12C22 12 12 12 12 2Z" fill="currentColor"/></svg></div>
+  <div class="leaf"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M12 2C12 2 12 12 2 12C2 12 12 12 12 22C12 22 12 12 22 12C22 12 12 12 12 2Z" fill="currentColor"/></svg></div>
+  <div class="leaf"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M12 2C12 2 12 12 2 12C2 12 12 12 12 22C12 22 12 12 22 12C22 12 12 12 12 2Z" fill="currentColor"/></svg></div>
+  <div class="leaf"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M12 2C12 2 12 12 2 12C2 12 12 12 12 22C12 22 12 12 22 12C22 12 12 12 12 2Z" fill="currentColor"/></svg></div>
+  <div class="leaf"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M12 2C12 2 12 12 2 12C2 12 12 12 12 22C12 22 12 12 22 12C22 12 12 12 12 2Z" fill="currentColor"/></svg></div>
+  <div class="leaf"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M12 2C12 2 12 12 2 12C2 12 12 12 12 22C12 22 12 12 22 12C22 12 12 12 12 2Z" fill="currentColor"/></svg></div>
+  <div class="leaf"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M12 2C12 2 12 12 2 12C2 12 12 12 12 22C12 22 12 12 22 12C22 12 12 12 12 2Z" fill="currentColor"/></svg></div>
+  <div class="leaf"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M12 2C12 2 12 12 2 12C2 12 12 12 12 22C12 22 12 12 22 12C22 12 12 12 12 2Z" fill="currentColor"/></svg></div>
+  <div class="leaf"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M12 2C12 2 12 12 2 12C2 12 12 12 12 22C12 22 12 12 22 12C22 12 12 12 12 2Z" fill="currentColor"/></svg></div>
+  <div class="leaf"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M12 2C12 2 12 12 2 12C2 12 12 12 12 22C12 22 12 12 22 12C22 12 12 12 12 2Z" fill="currentColor"/></svg></div>
+  <div class="leaf"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M12 2C12 2 12 12 2 12C2 12 12 12 12 22C12 22 12 12 22 12C22 12 12 12 12 2Z" fill="currentColor"/></svg></div>
+</div>
+
+<main class="page">
+  <div class="card">
+
+    <!-- Logo -->
+    <div class="logo">
+      <svg width="80" height="80" viewBox="0 0 100 100" fill="none" aria-hidden="true">
+        <path d="M30 30 C 40 10, 60 10, 70 30 S 60 90, 30 70" stroke="currentColor" stroke-width="2" opacity=".5"/>
+        <text x="26" y="52" font-family="Georgia,'Times New Roman',serif" font-size="40" fill="currentColor" font-style="italic">К</text>
+        <text x="44" y="66" font-family="Georgia,'Times New Roman',serif" font-size="40" fill="currentColor" font-style="italic">С</text>
+        <circle cx="50" cy="50" r="48" stroke="currentColor" stroke-width=".5" stroke-dasharray="4 2"/>
+      </svg>
+      <span class="logo-label">Коттеджи Сарженка</span>
+    </div>
+
+    <!-- Video -->
+    <div class="hero-video-wrap">
+      <video
+        src="assets/video.mp4"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="auto"
+        aria-label="Коттеджи Сарженка"
+      ></video>
+    </div>
+
+    <!-- Text -->
+    <div class="text-body">
+      <h1 class="title">Аренда коттеджей посуточно</h1>
+      <p class="subtitle">От собственника</p>
+    </div>
+
+    <!-- Contacts -->
+    <div class="contacts">
+      <p class="contact-name">Елена</p>
+      <a href="tel:+79111566108" class="contact-phone">
+        <!-- phone icon -->
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L7.91 9a16 16 0 0 0 6 6l1.27-.94a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/>
+        </svg>
+        +7 (911) 156 61 08
+      </a>
+    </div>
+
+    <!-- Map button -->
+    <a
+      href="https://yandex.com/maps/10174/saint-petersburg-and-leningrad-oblast/house/pridorozhnaya_alleya_380/Z0kYdAJhTEAPQFhqfX14dHlkZw==/?ll=30.251557%2C60.195573&z=16.58"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="btn-map"
+    >
+      <!-- pin icon -->
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/>
+        <circle cx="12" cy="10" r="3"/>
+      </svg>
+      Мы здесь
+    </a>
+
+    <!-- Footer -->
+    <a href="https://t.me/Lu_Lilu_Yuliya" target="_blank" rel="noopener noreferrer" class="footer-link">
+      Хочу такую же визитку
+    </a>
+
+  </div>
+</main>
+
+</body>
+</html>
